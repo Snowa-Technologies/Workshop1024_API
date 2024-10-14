@@ -7,5 +7,6 @@ const campaignController = require('../controllers/campaignController');
 const router = Router();
 
 router.get('/campaigns', campaignController.getCampaigns);
+router.post('/campaigns/add', campaignController.addNewCampaign);
 
 module.exports = router;

@@ -3,8 +3,8 @@ const  {MongoClient} = require('mongodb');
 
 let client;
 let isConnected = false;
-const uri = process.env.DB_CON_STRING;
-const dbName = process.env.DATABASE_NAME;
+const uri = process.env.COLLECT_WAY;
+const dbName = process.env.WAYPOINT;
 
 client = new MongoClient(uri, { }); // Create mongoclient
 
