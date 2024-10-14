@@ -7,5 +7,6 @@ const promotionController = require('../controllers/promotionController');
 const router = Router();
 
 router.get('/promotions', promotionController.getPromotions);
+router.get('/addpromotion', promotionController.addPromotion);
 
 module.exports = router;
