@@ -1,0 +1,15 @@
+{
+  "clients" : [
+        {
+          "code": "demo",
+          "bid" : "1",
+          "un" : "demo",
+          "pwd" : "admin",
+          "ftype":"T1",
+          "dbgroup" :"d",
+          "dmodel":"student_info_g1",
+          "sidField":"ph",
+          "tmodel" : "student_transactions_g1"
+        }
+  ]
+} 
