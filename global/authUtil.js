@@ -40,9 +40,5 @@ async function validateCaptcha(captchatoken){
       throw error;
   }
 }
-//Verify HMAC signature in the headers
-const verifyHMAC = (data, signature) => {
-  const expectedSignature = cryptoJS.HmacSHA256(JSON.stringify(data), process.env.HMAC_REQ_SECRET).toString(cryptoJS.enc.Hex);
-  return signature === expectedSignature;
-};
-module.exports = { authenticateToken, validateCaptcha, verifyHMAC };
+
+module.exports = { authenticateToken, validateCaptcha };

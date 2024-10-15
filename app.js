@@ -4,7 +4,6 @@ const cryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 
 const campaignRoute =  require('./routes/campaignRoute');
-const promotionRoute = require('./routes/promotionRoute');
 const authRoute = require("./routes/authRoute.js");
 
 //Server initialization
@@ -78,10 +77,7 @@ const checkRequest = (req, res, next) => {
 app.use(checkRequest);
 
 app.use('/api/v1', campaignRoute);
-app.use('/api/v1', promotionRoute);
 app.use('/api/v1',authRoute);
-
-
 
 app.get('/', (req, res)=> res.send("Workshop API is online."));
 
