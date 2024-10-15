@@ -12,7 +12,7 @@ const getCampaigns = async(req, res) => {
         //connect to database
         await connectToMongo();
         // get collection name from env file
-        const campaignCollection = getDB().collection(process.env.CAMPAGIN);
+        const campaignCollection = getDB().collection(process.env.CAMPAIGN_MODEL);
         
         // Default values for pageNumber and pageCount if they are not provided
         const pageNumber = parseInt(requestParams.pageNumber) || 1; // default to 1st page
@@ -43,7 +43,7 @@ const addNewCampaign = async (req, res) => {
         //connect to database
         await connectToMongo();
         // get collection name from env file
-        const campaignCollection = getDB().collection(process.env.CAMPAGIN);
+        const campaignCollection = getDB().collection(process.env.CAMPAIGN_MODEL);
 
         let sid = shortid.generate();
         if (sid.length > 7) {
