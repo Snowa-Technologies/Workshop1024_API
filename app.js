@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const campaignRoute =  require('./routes/campaignRoute');
 const authRoute = require("./routes/authRoute.js");
+const dashboardRoute = require("./routes/dashboardRoute.js");
 
 //Server initialization
 const app = express();
@@ -33,7 +34,7 @@ const checkRequest = (req, res, next) => {
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT');
             res.header('Access-Control-Allow-Headers', 'Content-Type');
             res.header('Access-Control-Allow-Credentials', 'true');
-            return res.status(204); // No Content
+            return res.sendStatus(204); // No Content
         } else {
             return res.status(403).json({ error: 'Forbidden - Origin not allowed' });
         }
@@ -77,6 +78,7 @@ app.use(checkRequest);
 
 app.use('/api/v1', campaignRoute);
 app.use('/api/v1', authRoute);
+app.use('/api/v1',dashboardRoute);
 
 app.get('/', (req, res)=> res.send("Workshop API is online."));
 
