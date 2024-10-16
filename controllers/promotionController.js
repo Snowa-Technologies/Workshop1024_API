@@ -7,13 +7,46 @@ require("dotenv/config");
 */ 
 const promotionModel = process.env.PROMOTION_MODEL;
 const campaignModel = process.env.CAMPAIGN_MODEL;
-/**
- * Get promotions
+/***
+ * This function will fetch allCampaigns
  */
-const getPromotions = async(req, res)=>{
-    res.status('OK').json();
-}
+const getPromotions = async(req, res) => {
+    const requestParams = req.query;
+ 
+    try {
+        //connect to database
+        await connectToMongo();
+        // get collection name from env file
+        const promotionCollection = getDB().collection(promotionModel);
+       
+        // Default values for pageNumber and pageCount if they are not provided
+        const pageNumber = parseInt(requestParams.pageNumber) || 1; // default to 1st page
+        const pageCount = parseInt(requestParams.pageCount) || 5;   // default to 5 records per page
+ 
+        // Calculate the number of records to skip based on the current page
+        const skip = (pageNumber - 1) * pageCount;
+        const limit = pageCount;
+ 
+        // To get the totalCampaigns count
+        let totalPromotions;
+        let result;
 
+        // Determine the query filter based on c_id
+        const queryFilter = requestParams.c_id === "all" ? {} : { c_id: requestParams.c_id };
+
+        // Count documents based on the filter
+        totalPromotions = await promotionCollection.countDocuments(queryFilter);
+
+        // Fetch the campaigns with the specified filter, pagination, and sorting
+        result = await promotionCollection.find(queryFilter).skip(skip).limit(limit).sort({ c_on: -1 }).toArray();
+        
+        return res.status(GLOBALS_ERRORS.HTTP_STATUS.OK).json({promotions: result, totalCount: totalPromotions});
+       
+    } catch (error) {
+        console.log("SNOWA_ERROR :: An error occurred while fetching allCampaigns: ", error.message);
+        return res.status(GLOBALS_ERRORS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json(GLOBALS_ERRORS.ERRORS.INTERNAL_SERVER_ERROR);
+    }
+}
 /**
  * Add new promotion
  */
@@ -25,6 +58,7 @@ const addPromotion = async (req, res) => {
     newPromotion.u_on = new Date();
     newPromotion.click = 100;
     newPromotion.impr = 1000;
+    newPromotion.status = 1;
     try {
         await connectToMongo();
         const promotionCollection = getDB().collection(promotionModel);
@@ -47,7 +81,7 @@ const addPromotion = async (req, res) => {
     }
 };
 
-const getCampaigns = async (req, res) => {
+const getCampaignNames = async (req, res) => {
     try {
         await connectToMongo();
         const campaignCollection = getDB().collection(campaignModel);
@@ -63,11 +97,7 @@ const getCampaigns = async (req, res) => {
                 }
             },
             {
-                $project : {
-                    _id : 0,
-                   c_nm : 1,
-                   c_id : 1
-                }
+                $project : { _id : 0, c_nm : 1, c_id : 1, start_dt : 1, end_dt : 1 }
             }
         ];
  
@@ -83,5 +113,5 @@ const getCampaigns = async (req, res) => {
 module.exports = {
     getPromotions,
    addPromotion,
-   getCampaigns
+   getCampaignNames
 }

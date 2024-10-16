@@ -33,14 +33,15 @@ const getCampaignStatistics = async (req, res) => {
         const chartPipeline = [
             {
                 $group: {
-                    _id: "$c_nm",
+                    _id: "$c_id",
+                    c_nm: { $first: "$c_nm" },
                     totalImpressions: { $sum: "$impr" },
                     totalClicks : {$sum : "$click"}
                 }
             },
             {
                 $project: {
-                    name: "$_id",
+                    name: "$c_nm",
                     totalImpressions: 1,
                     totalClicks : 1,
                     _id: 0

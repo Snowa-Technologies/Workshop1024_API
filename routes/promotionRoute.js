@@ -8,6 +8,6 @@ const router = Router();
 
 router.get('/promotions', promotionController.getPromotions);
 router.post('/promotions/add', promotionController.addPromotion);
-router.get('/campaign/names', promotionController.getCampaigns);
+router.get('/campaign/names', promotionController.getCampaignNames);
 
 module.exports = router;
