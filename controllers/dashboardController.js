@@ -30,12 +30,38 @@ const getCampaignStatistics = async (req, res) => {
             }
         ];
 
+        const chartPipeline = [
+            {
+                $group: {
+                    _id: "$c_nm",
+                    totalImpressions: { $sum: "$impr" },
+                    totalClicks : {$sum : "$click"}
+                }
+            },
+            {
+                $project: {
+                    name: "$_id",
+                    totalImpressions: 1,
+                    totalClicks : 1,
+                    _id: 0
+                }
+            }
+        ];
+
         const result = await promotionCollection.aggregate(pipeline).toArray();
+        const chartResult = await promotionCollection.aggregate(chartPipeline).toArray();
+        const chartData = { chartImpr : [], chartClicks : [], labels : []};
+
+        for(const item of chartResult) {
+            chartData.chartImpr.push(item.totalImpressions);
+            chartData.chartClicks.push(item.totalClicks);
+            chartData.labels.push(item.name);
+        }
 
         const totalImpressions = result[0].totalImpressions;
         const totalClicks = result[0].totalClicks
 
-        const statisticsData = {totalCampaigns, totalPromotions, totalImpressions, totalClicks};
+        const statisticsData = {totalCampaigns, totalPromotions, totalImpressions, totalClicks, chartData};
         return res.status(GLOBALS_ERRORS.HTTP_STATUS.OK).json(statisticsData);
     }
     catch(error) {

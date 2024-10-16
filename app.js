@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const campaignRoute =  require('./routes/campaignRoute');
 const authRoute = require("./routes/authRoute.js");
 const dashboardRoute = require("./routes/dashboardRoute.js");
+const promotionRoute = require("./routes/promotionRoute.js");
 
 //Server initialization
 const app = express();
@@ -78,7 +79,8 @@ app.use(checkRequest);
 
 app.use('/api/v1', campaignRoute);
 app.use('/api/v1', authRoute);
-app.use('/api/v1',dashboardRoute);
+app.use('/api/v1', dashboardRoute);
+app.use('/api/v1', promotionRoute);
 
 app.get('/', (req, res)=> res.send("Workshop API is online."));
 
