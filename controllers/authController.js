@@ -22,6 +22,9 @@ const login = async(req, res) => {
             //Return response
             return res.status(GLOBALS_ERRORS.HTTP_STATUS.OK).json({session, clientData});
        }
+       else{
+            return res.status(GLOBALS_ERRORS.HTTP_STATUS.UNAUTHORIZED).json("Please enter valid credentials");
+       }
     }catch(error){
         console.error('SNOWA_ERROR:: Error authenticating user : ', error.message);
         return res.status(GLOBALS_ERRORS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json(GLOBALS_ERRORS.ERRORS.AUTHENTICATION_FAILED);
